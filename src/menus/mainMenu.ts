@@ -1,4 +1,5 @@
 import createAccounts from "./createAccounts";
+import createLedger from "./createLedger";
 import { optionsMenu } from "./menu";
 
 export default function mainMenu() {
@@ -7,7 +8,7 @@ export default function mainMenu() {
         "# What would you like to do:",
         [
             { name: "create-accounts", callback: createAccounts },
-            { name: "create-ledger", callback: mainMenu },
+            { name: "create-ledger", callback: createLedger },
             { name: "quit", callback: process.exit }
         ]
     )

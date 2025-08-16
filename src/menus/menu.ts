@@ -7,12 +7,16 @@ const read = readline.createInterface({
 
 export type TOption = {
     name: string,
-    callback: () => void
+    callback: () => void,
+    notNumberSelectable?: boolean,
 };
 
 export function optionsMenu(text: string, options: TOption[]) {
     console.log(text);
-    options.forEach((option, index) => console.log(`  |-[${index+1}]: ${option.name}`));
+    options.forEach((option, index) => {
+        const number = `${option.notNumberSelectable ? ' ' : (index+1)}`
+        console.log(`  |-[${number}]: ${option.name}`)}
+    );
     getInput();
 
     function getInput() {
@@ -20,20 +24,23 @@ export function optionsMenu(text: string, options: TOption[]) {
             const n = parseInt(input);
             if (!Number.isNaN(n)) {
                 if (n < 1 || n > options.length) {
-                    console.log(`[${n}] is not an option.`)
-                    getInput();
-                    return;
+                    console.log(`[${n}] is not an option.`);
+                    return getInput();
                 }
 
-                options[n-1].callback();
-                return;
+                const option = options[n-1];
+                if (option.notNumberSelectable) {
+                    console.log(`[${n}] is not selectable by number.`);
+                    return getInput();
+                }
+
+                return options[n-1].callback();
             }
 
             input = input.trim().toLowerCase();
             const option = options.find(option => option.name == input);
             if (option !== undefined) {
-                option.callback();
-                return;
+                return option.callback();
             }
 
             console.log(`'${input}' is not an option.`);
