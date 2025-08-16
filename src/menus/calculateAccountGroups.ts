@@ -59,7 +59,7 @@ export default function calculateAccountGroups() {
         dataObject.accountGroups = accountGroups;
         dataObject.accountGroupValues = accountGroupValues;
         const path = context.path + context.filename + ".groups.summary.json";
-        const data = JSON.stringify(dataObject);
+        const data = JSON.stringify(dataObject, null, "\t");
         fs.writeFileSync(path, data);
         saveMenu(context, accounts, accountGroups, accountGroupValues);
         console.log(`Saved to '${path}'`);
