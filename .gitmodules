@@ -1,0 +1,3 @@
+[submodule "lib/VirtualAccountManagement"]
+	path = lib/VirtualAccountManagement
+	url = https://github.com/athdeleonardis/VirtualAccountManagement

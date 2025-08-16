@@ -1,0 +1,27 @@
+{
+  "name": "virtual-account-management-cli",
+  "version": "0.0.1",
+  "description": "A CLI for the library 'virtual-account-management'",
+  "main": "dist/main.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "build": "npx tsc",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/athdeleonardis/VirtualAccountManagementCLI.git"
+  },
+  "author": "Andrew De Leonardis",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/athdeleonardis/VirtualAccountManagementCLI/issues"
+  },
+  "homepage": "https://github.com/athdeleonardis/VirtualAccountManagementCLI#readme",
+  "devDependencies": {
+    "@types/node": "^24.3.0",
+    "typescript": "^5.9.2"
+  }
+}
