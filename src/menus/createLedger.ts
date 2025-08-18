@@ -41,23 +41,43 @@ export default function createLedger() {
     }
 
     function ledgerLineAdd(context: TContext) {
-        getFromAccount(context);
-
-        function getFromAccount(context: TContext) {
+        getDate(context);
+        
+        function getDate(context: TContext) {
             logContext([ context ]);
-            inputMenu("# Enter from-account name (Fake): ", (input) => {
-                return getToAccount(context, { fromAccount: input });
+            return inputMenu("# Enter optional date (YYYY-MM-DD):\n  (.skip)", (input) => {
+                if (input.length === 0 || input == ".skip") {
+                    return getDescription(context, {});
+                }
+                return getDescription(context, { date: input });
+            });
+        }
+        
+        function getDescription(context: TContext, ledgerLine: { date?: string }) {
+            logContext([ context, ledgerLine, ]);
+            return inputMenu("# Enter description (optional):\n  (.skip)", (input) => {
+                if (input.length === 0 || input == '.skip') {
+                    return getFromAccount(context, ledgerLine);
+                }
+                return getFromAccount(context, { ...ledgerLine, description: input });
             });
         }
 
-        function getToAccount(context: TContext, ledgerLine: { fromAccount: string }) {
+        function getFromAccount(context: TContext, ledgerLine: { date?: string, description?: string }) {
+            logContext([ context, ledgerLine ]);
+            inputMenu("# Enter from-account name (Fake): ", (input) => {
+                return getToAccount(context, { ...ledgerLine, fromAccount: input });
+            });
+        }
+
+        function getToAccount(context: TContext, ledgerLine: { date?: string, description?: string, fromAccount: string }) {
             logContext([ context, ledgerLine ]);
             inputMenu("# Enter to-account name:", (input) => {
                 return getAmount(context, { ...ledgerLine, toAccount: input });
             });
         }
 
-        function getAmount(context: TContext, ledgerLine: { fromAccount: string, toAccount: string }) {
+        function getAmount(context: TContext, ledgerLine: { date?: string, description?: string, fromAccount: string, toAccount: string }) {
             logContext([ context, ledgerLine ]);
             inputMenu("# Enter amount to add to to-account: ", (input) => {
                 const amount = parseFloat(input);
@@ -73,23 +93,43 @@ export default function createLedger() {
     }
 
     function ledgerLineSubtract(context: TContext) {
-        getFromAccount(context);
-
-        function getFromAccount(context: TContext) {
+        getDate(context);
+        
+        function getDate(context: TContext) {
             logContext([ context ]);
-            return inputMenu("# Enter from-account name: ", (input) => {
-                return getToAccount(context, { fromAccount: input });
+            return inputMenu("# Enter optional date (YYYY-MM-DD):\n  (.skip)", (input) => {
+                if (input.length === 0 || input == ".skip") {
+                    return getDescription(context, {});
+                }
+                return getDescription(context, { date: input });
+            });
+        }
+        
+        function getDescription(context: TContext, ledgerLine: { date?: string }) {
+            logContext([ context, ledgerLine ]);
+            return inputMenu("# Enter description (optional):\n  (.skip)", (input) => {
+                if (input.length === 0 || input == '.skip') {
+                    return getFromAccount(context, ledgerLine);
+                }
+                return getFromAccount(context, { ...ledgerLine, description: input });
             });
         }
 
-        function getToAccount(context: TContext, ledgerLine: { fromAccount: string }) {
+        function getFromAccount(context: TContext, ledgerLine: { date?: string, description?: string }) {
+            logContext([ context, ledgerLine ]);
+            return inputMenu("# Enter from-account name: ", (input) => {
+                return getToAccount(context, { ...ledgerLine, fromAccount: input });
+            });
+        }
+
+        function getToAccount(context: TContext, ledgerLine: { date?: string, description?: string, fromAccount: string }) {
             logContext([ context, ledgerLine ]);
             return inputMenu("# Enter to-account name (Fake): ", (input) => {
                 return getAmount(context, { ...ledgerLine, toAccount: input });
             });
         }
 
-        function getAmount(context: TContext, ledgerLine: { fromAccount: string, toAccount: string }) {
+        function getAmount(context: TContext, ledgerLine: { date?: string, description?: string, fromAccount: string, toAccount: string }) {
             logContext([ context, ledgerLine ]);
             return inputMenu("# Enter amount to subtract from from-account: ", (input) => {
                 const amount = parseFloat(input);
@@ -105,23 +145,43 @@ export default function createLedger() {
     }
 
     function ledgerLineTransfer(context: TContext) {
-        getFromAccount(context);
-
-        function getFromAccount(context: TContext) {
+        getDate(context);
+        
+        function getDate(context: TContext) {
             logContext([ context ]);
-            return inputMenu("# Enter from-account to transfer from: ", (input) => {
-                return getToAccount(context, { fromAccount: input });
+            return inputMenu("# Enter optional date (YYYY-MM-DD):\n  (.skip)", (input) => {
+                if (input.length === 0 || input == ".skip") {
+                    return getDescription(context, {});
+                }
+                return getDescription(context, { date: input });
+            });
+        }
+        
+        function getDescription(context: TContext, ledgerLine: { date?: string }) {
+            logContext([ context, ledgerLine ]);
+            return inputMenu("# Enter description (optional):\n  (.skip)", (input) => {
+                if (input.length === 0 || input == '.skip') {
+                    return getFromAccount(context, ledgerLine);
+                }
+                return getFromAccount(context, { ...ledgerLine, description: input });
             });
         }
 
-        function getToAccount(context: TContext, ledgerLine: { fromAccount: string }) {
+        function getFromAccount(context: TContext, ledgerLine: { date?: string, description?: string }) {
+            logContext([ context, ledgerLine ]);
+            return inputMenu("# Enter from-account to transfer from: ", (input) => {
+                return getToAccount(context, { ...ledgerLine, fromAccount: input });
+            });
+        }
+
+        function getToAccount(context: TContext, ledgerLine: { date?: string, description?: string, fromAccount: string }) {
             logContext([ context, ledgerLine ]);
             return inputMenu("# Enter to-account to transfer to: ", (input) => {
                 return getAmount(context, { ...ledgerLine, toAccount: input });
             });
         }
         
-        function getAmount(context: TContext, ledgerLine: { fromAccount: string, toAccount: string }) {
+        function getAmount(context: TContext, ledgerLine: { date?: string, description?: string, fromAccount: string, toAccount: string }) {
             logContext([ context, ledgerLine ]);
             return inputMenu("# Enter amount to transfer from from-account to to-account: ", (input) => {
                 const amount = parseFloat(input);
@@ -137,23 +197,43 @@ export default function createLedger() {
     }
 
     function ledgerLineTopUp(context: TContext) {
-        getFromAccount(context);
-
-        function getFromAccount(context: TContext) {
+        getDate(context);
+        
+        function getDate(context: TContext) {
             logContext([ context ]);
+            return inputMenu("# Enter optional date (YYYY-MM-DD):\n  (.skip)", (input) => {
+                if (input.length === 0 || input == ".skip") {
+                    return getDescription(context, {});
+                }
+                return getDescription(context, { date: input });
+            });
+        }
+        
+        function getDescription(context: TContext, ledgerLine: { date?: string }) {
+            logContext([ context, ledgerLine ]);
+            return inputMenu("# Enter description (optional):\n  (.skip)", (input) => {
+                if (input.length === 0 || input == '.skip') {
+                    return getFromAccount(context, ledgerLine);
+                }
+                return getFromAccount(context, { ...ledgerLine, description: input });
+            });
+        }
+
+        function getFromAccount(context: TContext,  ledgerLine: { date?: string, description?: string }) {
+            logContext([ context, ledgerLine ]);
             return inputMenu("# Enter from-account to transfer top-up from: ", (input) => {
                 getToAccount(context, { fromAccount: input });
             });
         }
 
-        function getToAccount(context: TContext, ledgerLine: { fromAccount: string }) {
+        function getToAccount(context: TContext, ledgerLine: { date?: string, description?: string, fromAccount: string }) {
             logContext([ context, ledgerLine ]);
             return inputMenu("# Enter to-account to transfer top-up to: ", (input) => {
                 return getAmount(context, { ...ledgerLine, toAccount: input });
             });
         }
 
-        function getAmount(context: TContext, ledgerLine: { fromAccount: string, toAccount: string }) {
+        function getAmount(context: TContext, ledgerLine: { date?: string, description?: string, fromAccount: string, toAccount: string }) {
             logContext([ context, ledgerLine ]);
             inputMenu("# Enter amount for to-account to be topped up to: ", (input) => {
                 const amount = parseFloat(input);
@@ -169,16 +249,36 @@ export default function createLedger() {
     }
 
     function ledgerLineDistribute(context: TContext) {
-        getFromAccount(context);
-
-        function getFromAccount(context: TContext) {
+        getDate(context);
+        
+        function getDate(context: TContext) {
             logContext([ context ]);
-            inputMenu("# Enter from-account to distribute from: ", (input) => {
-                return getToAccounts(context, { fromAccount: input });
+            return inputMenu("# Enter optional date (YYYY-MM-DD):\n  (.skip)", (input) => {
+                if (input.length === 0 || input == ".skip") {
+                    return getDescription(context, {});
+                }
+                return getDescription(context, { date: input });
+            });
+        }
+        
+        function getDescription(context: TContext, ledgerLine: { date?: string }) {
+            logContext([context, ledgerLine ]);
+            return inputMenu("# Enter description (optional):\n  (.skip)", (input) => {
+                if (input.length === 0 || input == '.skip') {
+                    return getFromAccount(context, ledgerLine);
+                }
+                return getFromAccount(context, { ...ledgerLine, description: input });
             });
         }
 
-        function getToAccounts(context: TContext, ledgerLine: { fromAccount: string }) {
+        function getFromAccount(context: TContext, ledgerLine: { date?: string, description?: string }) {
+            logContext([ context, ledgerLine ]);
+            inputMenu("# Enter from-account to distribute from: ", (input) => {
+                return getToAccounts(context, { ...ledgerLine, fromAccount: input });
+            });
+        }
+
+        function getToAccounts(context: TContext, ledgerLine: { date?: string, description?: string, fromAccount: string }) {
             logContext([ context, ledgerLine ]);
             inputMenu("# Enter to-accounts to distribute to (Comma separated): ", (input) => {
                 const toAccounts = input.split(",").map(entry => entry.trim());
@@ -186,7 +286,7 @@ export default function createLedger() {
             });
         }
 
-        function getToAccountProportion(context: TContext, ledgerLine: { fromAccount: string, toAccounts: TLedgerLineDistributionEntry[] }, toAccounts: string[]) {
+        function getToAccountProportion(context: TContext, ledgerLine: { date?: string, description?: string, fromAccount: string, toAccounts: TLedgerLineDistributionEntry[] }, toAccounts: string[]) {
             const toAccount = toAccounts.shift();
             if (toAccount === undefined) {
                 return addLedgerLine(context, ledgerLine);
@@ -203,7 +303,7 @@ export default function createLedger() {
             });
         }
 
-        function addLedgerLine(context: TContext, ledgerLine: { fromAccount: string, toAccounts: TLedgerLineDistributionEntry[] }) {
+        function addLedgerLine(context: TContext, ledgerLine: { date?: string, description?: string, fromAccount: string, toAccounts: TLedgerLineDistributionEntry[] }) {
             const ledgerLineDistribute: TLedgerLineDistribution = {
                 kind: ELedgerLineType.Distribution,
                 ...ledgerLine
